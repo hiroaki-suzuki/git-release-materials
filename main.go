@@ -49,7 +49,7 @@ func changeDirectory(args argument.Args) {
 }
 
 func verifyManagedByGit(args argument.Args) {
-	if _, err := os.Stat(".git"); os.IsNotExist(err) {
+	if _, err := exec.Command("git", "status").Output(); err != nil {
 		log.Fatal("the specified directory is not under git control. ", args.WorkDir)
 	}
 }
