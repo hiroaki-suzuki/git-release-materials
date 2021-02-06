@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"git-release-materials/argument"
-	"io/ioutil"
+	"git-release-materials/list"
 	"log"
 	"os"
 	"os/exec"
@@ -17,16 +17,12 @@ func main() {
 	changeDirectory(args)
 	verifyManagedByGit(args)
 
+	outputDirPath := createOutputDir(args)
+	changeList := list.NewChangeList(args)
+
 	switch args.Command {
 	case "list":
-		list := getList(args)
-
-		outputDir := "grm_" + time.Now().Format("20060102_030405")
-		outputDirPath := filepath.Join(args.OutputDir, outputDir)
-		err := os.MkdirAll(outputDirPath, 0744)
-		if err = ioutil.WriteFile(filepath.Join(outputDirPath, "list.txt"), []byte(list), 0644); err != nil {
-			log.Fatal(err)
-		}
+		changeList.Output(args, outputDirPath)
 	default:
 		log.Fatal(errors.New("the specified subcommand is not supported. " + args.Command))
 	}
@@ -42,8 +38,7 @@ func getArgs() argument.Args {
 }
 
 func changeDirectory(args argument.Args) {
-	err := os.Chdir(args.WorkDir)
-	if err != nil {
+	if err := os.Chdir(args.WorkDir); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -54,11 +49,12 @@ func verifyManagedByGit(args argument.Args) {
 	}
 }
 
-func getList(args argument.Args) string {
-	out, err := exec.Command("git", "diff", "--name-only", "--diff-filter=d", args.Commit1, args.Commit2).Output()
-	if err != nil {
+func createOutputDir(args argument.Args) string {
+	outputDir := "grm_" + time.Now().Format("20060102_030405")
+	outputDirPath := filepath.Join(args.OutputDir, outputDir)
+	if err := os.MkdirAll(outputDirPath, 0744); err != nil {
 		log.Fatal(err)
 	}
 
-	return string(out)
+	return outputDirPath
 }
