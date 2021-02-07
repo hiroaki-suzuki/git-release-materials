@@ -13,25 +13,17 @@ import (
 func main() {
 	args := getArgs()
 
+	executionFunc, err := getExecutionFunc(args)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	changeDirectory(args)
 	verifyGitRoot(args)
 
 	outputDirPath := createOutputDir(args)
 	changeList := release.NewChangeList(args)
-
-	switch args.Command {
-	case "list":
-		release.OutputList(changeList, args, outputDirPath)
-	case "before-after":
-		release.OutputList(changeList, args, outputDirPath)
-		release.OutputBeforeAfter(changeList, args, outputDirPath)
-	case "release":
-		release.OutputList(changeList, args, outputDirPath)
-		release.OutputBeforeAfter(changeList, args, outputDirPath)
-		release.OutputMaterials(changeList, args, outputDirPath)
-	default:
-		log.Fatal(errors.New("the specified subcommand is not supported. " + args.Command))
-	}
+	executionFunc(changeList, outputDirPath)
 }
 
 func getArgs() argument.Args {
@@ -41,6 +33,28 @@ func getArgs() argument.Args {
 	}
 
 	return args
+}
+
+func getExecutionFunc(args argument.Args) (func(changeList release.ChangeList, outputDirPath string), error) {
+	switch args.Command {
+	case "list":
+		return func(changeList release.ChangeList, outputDirPath string) {
+			release.OutputList(changeList, args, outputDirPath)
+		}, nil
+	case "before-after":
+		return func(changeList release.ChangeList, outputDirPath string) {
+			release.OutputList(changeList, args, outputDirPath)
+			release.OutputBeforeAfter(changeList, args, outputDirPath)
+		}, nil
+	case "release":
+		return func(changeList release.ChangeList, outputDirPath string) {
+			release.OutputList(changeList, args, outputDirPath)
+			release.OutputBeforeAfter(changeList, args, outputDirPath)
+			release.OutputMaterials(changeList, args, outputDirPath)
+		}, nil
+	default:
+		return nil, errors.New("the specified subcommand is not supported. " + args.Command)
+	}
 }
 
 func changeDirectory(args argument.Args) {
