@@ -22,6 +22,9 @@ func main() {
 	switch args.Command {
 	case "list":
 		release.OutputList(changeList, args, outputDirPath)
+	case "release":
+		release.OutputList(changeList, args, outputDirPath)
+		release.OutputMaterials(changeList, args, outputDirPath)
 	default:
 		log.Fatal(errors.New("the specified subcommand is not supported. " + args.Command))
 	}
