@@ -3,10 +3,9 @@ package main
 import (
 	"errors"
 	"git-release-materials/argument"
-	"git-release-materials/list"
+	"git-release-materials/release"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 )
@@ -15,14 +14,14 @@ func main() {
 	args := getArgs()
 
 	changeDirectory(args)
-	verifyManagedByGit(args)
+	verifyGitRoot(args)
 
 	outputDirPath := createOutputDir(args)
-	changeList := list.NewChangeList(args)
+	changeList := release.NewChangeList(args)
 
 	switch args.Command {
 	case "list":
-		changeList.Output(args, outputDirPath)
+		release.OutputList(changeList, args, outputDirPath)
 	default:
 		log.Fatal(errors.New("the specified subcommand is not supported. " + args.Command))
 	}
@@ -43,9 +42,9 @@ func changeDirectory(args argument.Args) {
 	}
 }
 
-func verifyManagedByGit(args argument.Args) {
-	if _, err := exec.Command("git", "status").Output(); err != nil {
-		log.Fatal("the specified directory is not under git control. ", args.WorkDir)
+func verifyGitRoot(args argument.Args) {
+	if _, err := os.Stat(".git"); os.IsNotExist(err) {
+		log.Fatal("the specified directory is not git root. ", args.WorkDir)
 	}
 }
 
