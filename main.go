@@ -18,10 +18,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	outputDirPath := createOutputDir(args)
+
 	changeDirectory(args)
 	verifyGitRoot(args)
 
-	outputDirPath := createOutputDir(args)
 	changeList := release.NewChangeList(args)
 	executionFunc(changeList, outputDirPath)
 }
@@ -70,8 +71,13 @@ func verifyGitRoot(args argument.Args) {
 }
 
 func createOutputDir(args argument.Args) string {
-	outputDir := "grm_" + time.Now().Format("20060102_030405")
-	outputDirPath := filepath.Join(args.OutputDir, outputDir)
+	outputDirName := "grm_" + time.Now().Format("20060102_030405")
+	absOutputDirPath, err := filepath.Abs(args.OutputDir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	outputDirPath := filepath.Join(absOutputDirPath, outputDirName)
 	if err := os.MkdirAll(outputDirPath, 0744); err != nil {
 		log.Fatal(err)
 	}
