@@ -1,4 +1,4 @@
-package release
+package command
 
 import (
 	"git-release-materials/argument"
