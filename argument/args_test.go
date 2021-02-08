@@ -15,7 +15,7 @@ func TestGetArgsForList(t *testing.T) {
 		GitDir:    "git-dir",
 		OutputDir: "output-dir",
 	}
-	actual, _ := GetArgs()
+	actual, _ := Parse()
 
 	if actual != expected {
 		t.Errorf("Test failed, expected: '%s', got:  '%s'", expected, actual)
@@ -33,7 +33,7 @@ func TestGetArgsDefault(t *testing.T) {
 		GitDir:    currentDir,
 		OutputDir: currentDir,
 	}
-	actual, _ := GetArgs()
+	actual, _ := Parse()
 
 	if actual != expected {
 		t.Errorf("Test failed, expected: '%s', got:  '%s'", expected, actual)
@@ -43,7 +43,7 @@ func TestGetArgsDefault(t *testing.T) {
 func TestGetArgsNoArguments(t *testing.T) {
 	os.Args = []string{"cmd"}
 
-	_, actual := GetArgs()
+	_, actual := Parse()
 
 	if actual == nil {
 		t.Errorf("Test failed, expected: '%s', got:  '%s'", "nil", actual)

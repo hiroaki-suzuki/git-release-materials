@@ -28,7 +28,7 @@ func main() {
 }
 
 func getArgs() argument.Args {
-	args, err := argument.GetArgs()
+	args, err := argument.Parse()
 	if err != nil {
 		log.Fatal(err)
 	}

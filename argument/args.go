@@ -14,7 +14,7 @@ type Args struct {
 	OutputDir string `short:"o" long:"output-dir" description:"output directory"`
 }
 
-func GetArgs() (Args, error) {
+func Parse() (Args, error) {
 	args := Args{}
 	nonFlagArgs, err := flags.Parse(&args)
 	if err != nil {
