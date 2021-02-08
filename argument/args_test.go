@@ -6,14 +6,14 @@ import (
 )
 
 func TestGetArgsForList(t *testing.T) {
-	os.Args = []string{"cmd", "list", "tag1", "tag2", "-d", "/tmp/args", "-o", "/tmp/output"}
+	os.Args = []string{"cmd", "list", "tag1", "tag2", "-g", "git-dir", "-o", "output-dir"}
 
 	expected := Args{
 		Command:   "list",
 		Commit1:   "tag1",
 		Commit2:   "tag2",
-		WorkDir:   "/tmp/args",
-		OutputDir: "/tmp/output",
+		GitDir:    "git-dir",
+		OutputDir: "output-dir",
 	}
 	actual, _ := GetArgs()
 
@@ -30,7 +30,7 @@ func TestGetArgsDefault(t *testing.T) {
 		Command:   "list",
 		Commit1:   "tag1",
 		Commit2:   "tag2",
-		WorkDir:   currentDir,
+		GitDir:    currentDir,
 		OutputDir: currentDir,
 	}
 	actual, _ := GetArgs()

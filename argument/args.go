@@ -10,8 +10,8 @@ type Args struct {
 	Command   string
 	Commit1   string
 	Commit2   string
-	WorkDir   string `short:"d" long:"workdir" description:"move working directory"`
-	OutputDir string `short:"o" long:"output" description:"output directory"`
+	GitDir    string `short:"g" long:"git-dir" description:"git root directory"`
+	OutputDir string `short:"o" long:"output-dir" description:"output directory"`
 }
 
 func GetArgs() (Args, error) {
@@ -29,8 +29,8 @@ func GetArgs() (Args, error) {
 	args.Commit1 = nonFlagArgs[1]
 	args.Commit2 = nonFlagArgs[2]
 
-	if args.WorkDir == "" {
-		args.WorkDir, _ = os.Getwd()
+	if args.GitDir == "" {
+		args.GitDir, _ = os.Getwd()
 	}
 	if args.OutputDir == "" {
 		args.OutputDir, _ = os.Getwd()
