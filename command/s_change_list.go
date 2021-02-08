@@ -34,7 +34,11 @@ func createList(args argument.Args, diffFilter string) []string {
 		log.Fatal(err)
 	}
 
-	list := strings.FieldsFunc(string(ret), func(c rune) bool {
+	return createTargetList(args, ret)
+}
+
+func createTargetList(args argument.Args, gitDiffResult []byte) []string {
+	list := strings.FieldsFunc(string(gitDiffResult), func(c rune) bool {
 		return c == '\n'
 	})
 
