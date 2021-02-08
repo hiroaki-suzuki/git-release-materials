@@ -2,6 +2,7 @@ package command
 
 import (
 	"git-release-materials/argument"
+	"github.com/ryanuber/go-glob"
 	"log"
 	"os/exec"
 	"strings"
@@ -33,7 +34,30 @@ func createList(args argument.Args, diffFilter string) []string {
 		log.Fatal(err)
 	}
 
-	return strings.FieldsFunc(string(ret), func(c rune) bool {
+	return createTargetList(args, ret)
+}
+
+func createTargetList(args argument.Args, gitDiffResult []byte) []string {
+	list := strings.FieldsFunc(string(gitDiffResult), func(c rune) bool {
 		return c == '\n'
 	})
+
+	var excludeList = strings.Split(args.Exclude, ",")
+	var targetList []string
+	for _, file := range list {
+		if canAddTargetList(excludeList, file) {
+			targetList = append(targetList, file)
+		}
+	}
+
+	return targetList
+}
+
+func canAddTargetList(excludeList []string, file string) bool {
+	for _, excludeFile := range excludeList {
+		if glob.Glob(excludeFile, file) {
+			return false
+		}
+	}
+	return true
 }

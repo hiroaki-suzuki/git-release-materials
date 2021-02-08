@@ -43,6 +43,7 @@ If not specified, the current directory will be specified.
 ```shell
 git-release-materials release commit1 commit2 -g /path/to/git-root-dir
 ```
+
 #### -o, --output-dir
 
 You can specify a directory in which to place the materials. If the directory does not exist, it will be created.
@@ -51,4 +52,12 @@ If it is not specified, a directory for the output will be created in the curren
 
 ```shell
 git-release-materials release commit1 commit2 -o /path/to/output-dir
+```
+
+#### -e, --exclude
+
+You can specify unwanted materials. 
+
+```shell
+git-release-materials release commit1 commit2 -e .gitignore,*.md
 ```
