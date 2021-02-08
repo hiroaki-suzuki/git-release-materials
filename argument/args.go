@@ -12,6 +12,7 @@ type Args struct {
 	Commit2   string
 	GitDir    string `short:"g" long:"git-dir" description:"git root directory"`
 	OutputDir string `short:"o" long:"output-dir" description:"output directory"`
+	Exclude   string `short:"e" long:"exclude" description:"exclude the specified files"`
 }
 
 func Parse() (Args, error) {

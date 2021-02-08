@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetArgsForList(t *testing.T) {
-	os.Args = []string{"cmd", "list", "tag1", "tag2", "-g", "git-dir", "-o", "output-dir"}
+	os.Args = []string{"cmd", "list", "tag1", "tag2", "-g", "git-dir", "-o", "output-dir", "-e", ".gitignore,*.md"}
 
 	expected := Args{
 		Command:   "list",
@@ -14,6 +14,7 @@ func TestGetArgsForList(t *testing.T) {
 		Commit2:   "tag2",
 		GitDir:    "git-dir",
 		OutputDir: "output-dir",
+		Exclude:   ".gitignore,*.md",
 	}
 	actual, _ := Parse()
 
