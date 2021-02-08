@@ -34,21 +34,21 @@ git-release-materials release commit1 commit2
 
 ### Options
 
-#### -d, --workdir
+#### -g, --git-dir
 
-You can specify the working directory in which to run this program. It will be an error if the .git directory does not exist in this directory.
+You can specify a directory that is managed by Git. If the .git directory does not exist in this directory, an error will occur.
 
-If it is not specified, the current working directory will be specified.
+If not specified, the current directory will be specified.
 
 ```shell
-git-release-materials release commit1 commit2 -d /path/to/dir
+git-release-materials release commit1 commit2 -g /path/to/git-root-dir
 ```
-#### -o, --output
+#### -o, --output-dir
 
 You can specify a directory in which to place the materials. If the directory does not exist, it will be created.
 
 If it is not specified, a directory for the output will be created in the current working directory.
 
 ```shell
-git-release-materials release commit1 commit2 -o /path/to/dir
+git-release-materials release commit1 commit2 -o /path/to/output-dir
 ```
