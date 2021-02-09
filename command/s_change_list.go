@@ -29,7 +29,7 @@ func NewChangeList(args argument.Args) ChangeList {
 }
 
 func createList(args argument.Args, diffFilter string) []string {
-	ret, err := exec.Command("git", "diff", "--name-only", "--diff-filter="+diffFilter, args.Commit1, args.Commit2).Output()
+	ret, err := exec.Command("git", "diff", "-z", "--name-only", "--diff-filter="+diffFilter, args.Commit1, args.Commit2).Output()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func createList(args argument.Args, diffFilter string) []string {
 
 func createTargetList(args argument.Args, gitDiffResult []byte) []string {
 	list := strings.FieldsFunc(string(gitDiffResult), func(c rune) bool {
-		return c == '\n'
+		return c == 0
 	})
 
 	var excludeList = strings.Split(args.Exclude, ",")
