@@ -31,7 +31,7 @@ func outputFile(commit string, releaseDirPath string, outputFilePath string) {
 
 	content, err := exec.Command("git", "cat-file", "-p", target).Output()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("fail git cat-file. ", err)
 	}
 
 	path := filepath.Join(releaseDirPath, outputFilePath)

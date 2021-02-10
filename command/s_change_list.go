@@ -13,7 +13,6 @@ type ChangeList struct {
 	Modified []string
 	Deleted  []string
 	Renamed  []string
-	Copied   []string
 	Broken   []string
 }
 
@@ -23,7 +22,6 @@ func NewChangeList(args argument.Args) ChangeList {
 		Modified: createList(args, "M"),
 		Deleted:  createList(args, "D"),
 		Renamed:  createList(args, "R"),
-		Copied:   createList(args, "C"),
 		Broken:   createList(args, "B"),
 	}
 }
