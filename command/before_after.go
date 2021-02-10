@@ -12,7 +12,7 @@ func OutputBeforeAfter(changeList ChangeList, args argument.Args, outputDirPath 
 
 func outputBefore(changeList ChangeList, args argument.Args, beforeAfterDirPath string) {
 	beforeDirPath := createOutputDir(beforeAfterDirPath, "before_"+args.Commit1)
-	beforeOutputFilePaths := createOutputFilePaths(changeList.Modified, changeList.Renamed, changeList.Copied, changeList.Deleted)
+	beforeOutputFilePaths := createOutputFilePaths(changeList.Modified, changeList.Renamed, changeList.Deleted)
 	for _, outputFilePath := range beforeOutputFilePaths {
 		outputFile(args.Commit1, beforeDirPath, outputFilePath)
 	}
@@ -20,7 +20,7 @@ func outputBefore(changeList ChangeList, args argument.Args, beforeAfterDirPath 
 
 func outputAfter(changeList ChangeList, args argument.Args, beforeAfterDirPath string) {
 	afterDirPath := createOutputDir(beforeAfterDirPath, "after_"+args.Commit2)
-	afterOutputFilePaths := createOutputFilePaths(changeList.Added, changeList.Modified, changeList.Renamed, changeList.Copied)
+	afterOutputFilePaths := createOutputFilePaths(changeList.Added, changeList.Modified, changeList.Renamed)
 	for _, outputFilePath := range afterOutputFilePaths {
 		outputFile(args.Commit2, afterDirPath, outputFilePath)
 	}

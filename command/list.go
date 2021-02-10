@@ -25,7 +25,6 @@ func OutputList(changeList ChangeList, args argument.Args, outputDirPath string)
 	writeList(writer, "## Modified list", changeList.Modified)
 	writeList(writer, "## Deleted list", changeList.Deleted)
 	writeList(writer, "## Renamed list", changeList.Renamed)
-	writeList(writer, "## Copied list", changeList.Copied)
 	writeList(writer, "## Broken list", changeList.Broken)
 
 	if err = writer.Flush(); err != nil {
