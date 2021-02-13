@@ -14,12 +14,12 @@ func GetSubcommand(args argument.Args) (func(changeList ChangeList, outputDirPat
 	case "before-after":
 		return func(changeList ChangeList, outputDirPath string) {
 			OutputList(changeList, args, outputDirPath)
-			OutputBeforeAfter(changeList, args, outputDirPath)
+			OutputBeforeAfter(args, outputDirPath)
 		}, nil
 	case "release":
 		return func(changeList ChangeList, outputDirPath string) {
 			OutputList(changeList, args, outputDirPath)
-			OutputBeforeAfter(changeList, args, outputDirPath)
+			OutputBeforeAfter(args, outputDirPath)
 			OutputMaterials(changeList, args, outputDirPath)
 		}, nil
 	default:
