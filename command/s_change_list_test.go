@@ -8,7 +8,7 @@ import (
 
 func TestCreateTargetList(t *testing.T) {
 	args := argument.Args{Exclude: ".gitignore,*.md"}
-	gitDiffResult := []byte(".gitignore\nfunctions.go\npath/to/fileB\nREADME.md")
+	gitDiffResult := []byte(".gitignore\x00functions.go\x00path/to/fileB\x00README.md")
 
 	expected := []string{"functions.go", "path/to/fileB"}
 	actual := createTargetList(args, gitDiffResult)
