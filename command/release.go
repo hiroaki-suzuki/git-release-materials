@@ -2,13 +2,18 @@ package command
 
 import (
 	"git-release-materials/argument"
+	"log"
 )
 
-func OutputMaterials(changeList ChangeList, args argument.Args, outputDirPath string) {
-	releaseDirPath := createOutputDir(outputDirPath, "Release")
-	outputFilePaths := createOutputFilePaths(changeList.Added, changeList.Modified, changeList.Renamed)
+func OutputMaterials(args argument.Args, outputDirPath string) {
+	diffList, err := createGitDiffList(args.Commit1, args.Commit2)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	for _, outputFilePath := range outputFilePaths {
-		outputFile(args.Commit2, releaseDirPath, outputFilePath)
+	releaseDirPath := createOutputDir(outputDirPath, "Release")
+	ret, err := execGitArchiveWithExtract(args.Commit2, diffList, releaseDirPath)
+	if err != nil {
+		log.Fatal(err, string(ret))
 	}
 }

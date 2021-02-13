@@ -1,14 +1,8 @@
 package command
 
 import (
-	"bytes"
-	"context"
 	"git-release-materials/argument"
-	"github.com/codeclysm/extract"
-	"io/ioutil"
 	"log"
-	"os"
-	"path/filepath"
 )
 
 func OutputBeforeAfter(args argument.Args, outputDirPath string) {
@@ -33,18 +27,8 @@ func output(commit1 string, commit2 string, outputDirPath string) {
 		log.Fatal(err)
 	}
 
-	archiveFilePath := filepath.Join(outputDirPath, "archive.zip")
-	ret, err := execGitArchive(commit2, diffList, archiveFilePath)
+	ret, err := execGitArchiveWithExtract(commit2, diffList, outputDirPath)
 	if err != nil {
-		log.Fatal(err, ret)
-	}
-
-	data, _ := ioutil.ReadFile(archiveFilePath)
-	if err = extract.Zip(context.Background(), bytes.NewBuffer(data), outputDirPath, nil); err != nil {
-		log.Fatal(err)
-	}
-
-	if err := os.Remove(archiveFilePath); err != nil {
-		log.Fatal(err)
+		log.Fatal(err, string(ret))
 	}
 }

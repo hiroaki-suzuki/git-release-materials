@@ -32,27 +32,30 @@ func TestCreateGitDiffListFail(t *testing.T) {
 func TestExecGitArchive(t *testing.T) {
 	commit2 := "9718b8b"
 	diffList := []string{".gitignore", "argument/args.go", "argument/args_test.go", "go.mod", "go.sum", "main.go"}
-	archiveFilePath := "archive.zip"
+	outputDirPath := "tmp"
 
 	_ = os.Chdir("../")
-	ret, err := execGitArchive(commit2, diffList, archiveFilePath)
-	_ = os.Remove(archiveFilePath)
+	_ = os.MkdirAll(outputDirPath, 0744)
+
+	ret, err := execGitArchiveWithExtract(commit2, diffList, outputDirPath)
+
+	_ = os.RemoveAll(outputDirPath)
 
 	if err != nil {
-		t.Errorf("execGitArchive(%s, %v, %s): an error has occurred. %v %s", commit2, diffList, archiveFilePath, err, ret)
+		t.Errorf("execGitArchive(%s, %v, %s): an error has occurred. %v %s", commit2, diffList, outputDirPath, err, ret)
 	}
 }
 
 func TestExecGitArchiveFail(t *testing.T) {
 	commit2 := "9718b8b"
 	diffList := []string{".gitignore", "argument/args.go", "argument/args_test.go", "go.mod", "go.sum", "main.go"}
-	archiveFilePath := "archive.zip"
+	outputDirPath := "tmp"
 
-	_ = os.Chdir("../../")
-	_, err := execGitArchive(commit2, diffList, archiveFilePath)
-	_ = os.Remove(archiveFilePath)
+	_ = os.Chdir(os.TempDir())
+
+	_, err := execGitArchiveWithExtract(commit2, diffList, "./")
 
 	if err == nil || err.Error() == "" {
-		t.Errorf("execGitArchive(%s, %v, %s): no error occurred.", commit2, diffList, archiveFilePath)
+		t.Errorf("execGitArchive(%s, %v, %s): no error occurred.", commit2, diffList, outputDirPath)
 	}
 }

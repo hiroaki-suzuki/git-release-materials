@@ -20,3 +20,6 @@ git-release-materials
 
 # release dir
 grm_*
+
+# other
+tmp
