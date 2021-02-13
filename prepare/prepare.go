@@ -19,8 +19,8 @@ func Prepare(args argument.Args) error {
 	return nil
 }
 
-func CreateOutputDir(args argument.Args) (string, error) {
-	outputDirName := "grm_" + time.Now().Format("20060102_030405")
+func CreateOutputDir(args argument.Args, now time.Time) (string, error) {
+	outputDirName := "grm_" + now.Format("20060102_030405")
 	absOutputDirPath, err := filepath.Abs(args.OutputDir)
 	if err != nil {
 		return "", err

@@ -5,6 +5,7 @@ import (
 	"git-release-materials/command"
 	"git-release-materials/prepare"
 	"log"
+	"time"
 )
 
 func main() {
@@ -22,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	outputDirPath, err := prepare.CreateOutputDir(args)
+	outputDirPath, err := prepare.CreateOutputDir(args, time.Now())
 	if err != nil {
 		log.Fatal(err)
 	}
