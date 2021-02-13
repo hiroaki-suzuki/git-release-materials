@@ -8,8 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
-	"strings"
+	"path/filepath"
 )
 
 func OutputBeforeAfter(args argument.Args, outputDirPath string) {
@@ -28,32 +27,24 @@ func outputAfter(args argument.Args, beforeAfterDirPath string) {
 	output(args.Commit1, args.Commit2, afterDirPath)
 }
 
-func output(commit1 string, commit2 string, afterDirPath string) {
-	diffRet, err := exec.Command("git", "diff", "-z", "--name-only", "--diff-filter=d", commit1, commit2).Output()
+func output(commit1 string, commit2 string, outputDirPath string) {
+	diffList, err := createGitDiffList(commit1, commit2)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	list := strings.FieldsFunc(string(diffRet), func(c rune) bool {
-		return c == 0
-	})
-
-	archiveFile := afterDirPath + "/archive.zip"
-	args := []string{"archive", commit2}
-	args = append(args, list...)
-	args = append(args, "-o", archiveFile)
-	if err := exec.Command("git", args...).Run(); err != nil {
-		log.Fatal(err)
-	}
-
-	data, _ := ioutil.ReadFile(archiveFile)
-	buffer := bytes.NewBuffer(data)
-	err = extract.Zip(context.Background(), buffer, afterDirPath+"/", nil)
+	archiveFilePath := filepath.Join(outputDirPath, "archive.zip")
+	ret, err := execGitArchive(commit2, diffList, archiveFilePath)
 	if err != nil {
+		log.Fatal(err, ret)
+	}
+
+	data, _ := ioutil.ReadFile(archiveFilePath)
+	if err = extract.Zip(context.Background(), bytes.NewBuffer(data), outputDirPath, nil); err != nil {
 		log.Fatal(err)
 	}
 
-	if err := os.Remove(archiveFile); err != nil {
+	if err := os.Remove(archiveFilePath); err != nil {
 		log.Fatal(err)
 	}
 }
