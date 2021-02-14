@@ -14,7 +14,7 @@ func TestPrepare(t *testing.T) {
 	actual := Prepare(args)
 
 	if actual != nil {
-		t.Errorf("Prepare(%+v): got %v, want nil", args, actual)
+		t.Errorf(" got %v, want %v", actual, nil)
 	}
 }
 
@@ -24,11 +24,11 @@ func TestPrepareNotGitDir(t *testing.T) {
 	actual := Prepare(args)
 
 	if actual == nil {
-		t.Errorf("Prepare(%+v): got %v, want not nil", args, actual)
+		t.Errorf(" got %v, want %v", actual, nil)
 	}
 }
 
-func TestCreateOutputDir(t *testing.T) {
+func TestCreateOutputRootDir(t *testing.T) {
 	testCases := []struct {
 		outputDir     string
 		now           time.Time
@@ -44,10 +44,10 @@ func TestCreateOutputDir(t *testing.T) {
 
 		currentDir, _ := os.Getwd()
 		expected := filepath.Join(currentDir, testCase.outputDirName)
-		actual, _ := CreateOutputDir(args, now)
+		actual, _ := CreateOutputRootDir(args, now)
 
 		if actual != expected {
-			t.Errorf("CreateOutputDir(%+vA, %s): got %v, want %v", args, now, actual, expected)
+			t.Errorf(" got %v, want %v", actual, expected)
 		}
 		_ = os.Remove(actual)
 	}

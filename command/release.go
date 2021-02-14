@@ -2,6 +2,7 @@ package command
 
 import (
 	"git-release-materials/argument"
+	"git-release-materials/prepare"
 	"log"
 )
 
@@ -11,7 +12,11 @@ func OutputMaterials(args argument.Args, outputDirPath string) {
 		log.Fatal(err)
 	}
 
-	releaseDirPath := createOutputDir(outputDirPath, "Release")
+	releaseDirPath, err := prepare.CreateOutputDir(outputDirPath, "Release")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	ret, err := execGitArchiveWithExtract(args.Commit2, diffList, releaseDirPath)
 	if err != nil {
 		log.Fatal(err, string(ret))

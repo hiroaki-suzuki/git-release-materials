@@ -23,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	outputDirPath, err := prepare.CreateOutputDir(args, time.Now())
+	outputDirPath, err := prepare.CreateOutputRootDir(args, time.Now())
 	if err != nil {
 		log.Fatal(err)
 	}

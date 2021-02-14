@@ -19,14 +19,18 @@ func Prepare(args argument.Args) error {
 	return nil
 }
 
-func CreateOutputDir(args argument.Args, now time.Time) (string, error) {
+func CreateOutputRootDir(args argument.Args, now time.Time) (string, error) {
 	outputDirName := "grm_" + now.Format("20060102_030405")
 	absOutputDirPath, err := filepath.Abs(args.OutputDir)
 	if err != nil {
 		return "", err
 	}
 
-	outputDirPath := filepath.Join(absOutputDirPath, outputDirName)
+	return CreateOutputDir(absOutputDirPath, outputDirName)
+}
+
+func CreateOutputDir(parentDirName string, outputDirName string) (string, error) {
+	outputDirPath := filepath.Join(parentDirName, outputDirName)
 	if err := os.MkdirAll(outputDirPath, 0744); err != nil {
 		return "", err
 	}
