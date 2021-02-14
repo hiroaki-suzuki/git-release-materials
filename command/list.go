@@ -33,6 +33,10 @@ func OutputList(changeList ChangeList, args argument.Args, outputDirPath string)
 }
 
 func writeList(writer *bufio.Writer, title string, lines []string) {
+	if len(lines) == 0 {
+		return
+	}
+
 	markdownList := make([]string, len(lines))
 	for i, line := range lines {
 		markdownList[i] = "* " + line
