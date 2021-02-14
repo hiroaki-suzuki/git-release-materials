@@ -5,39 +5,54 @@ import (
 	"testing"
 )
 
-func TestGetArgsForList(t *testing.T) {
-	os.Args = []string{"cmd", "list", "tag1", "tag2", "-g", "git-dir", "-o", "output-dir", "-e", ".gitignore,*.md"}
-
-	expected := Args{
-		Command:   "list",
-		Commit1:   "tag1",
-		Commit2:   "tag2",
-		GitDir:    "git-dir",
-		OutputDir: "output-dir",
-		Exclude:   ".gitignore,*.md",
-	}
-	actual, _ := Parse()
-
-	if actual != expected {
-		t.Errorf("Test failed, expected: '%s', got:  '%s'", expected, actual)
-	}
-}
-
-func TestGetArgsDefault(t *testing.T) {
-	os.Args = []string{"cmd", "list", "tag1", "tag2"}
-
+func TestParse(t *testing.T) {
 	currentDir, _ := os.Getwd()
-	expected := Args{
-		Command:   "list",
-		Commit1:   "tag1",
-		Commit2:   "tag2",
-		GitDir:    currentDir,
-		OutputDir: currentDir,
-	}
-	actual, _ := Parse()
 
-	if actual != expected {
-		t.Errorf("Test failed, expected: '%s', got:  '%s'", expected, actual)
+	testCases := []struct {
+		osArgs   []string
+		expected Args
+	}{
+		{
+			osArgs: []string{"cmd", "list", "tag1", "tag2", "-g", "git-dir", "-o", "output-dir", "-e", ".gitignore,*.md"},
+			expected: Args{
+				Command:   "list",
+				Commit1:   "tag1",
+				Commit2:   "tag2",
+				GitDir:    "git-dir",
+				OutputDir: "output-dir",
+				Exclude:   ".gitignore,*.md",
+			},
+		},
+		{
+			osArgs: []string{"cmd", "list", "tag1", "tag2"},
+			expected: Args{
+				Command:   "list",
+				Commit1:   "tag1",
+				Commit2:   "tag2",
+				GitDir:    currentDir,
+				OutputDir: currentDir,
+				Exclude:   "",
+			},
+		},
+		{
+			osArgs: []string{"cmd", "list", "tag1"},
+			expected: Args{
+				Command:   "list",
+				Commit1:   "tag1",
+				Commit2:   "HEAD",
+				GitDir:    currentDir,
+				OutputDir: currentDir,
+				Exclude:   "",
+			},
+		},
+	}
+
+	for i, tc := range testCases {
+		os.Args = tc.osArgs
+		actual, _ := Parse()
+		if actual != tc.expected {
+			t.Errorf("test case %d failded: got %v, want %v", i, actual, tc.expected)
+		}
 	}
 }
 

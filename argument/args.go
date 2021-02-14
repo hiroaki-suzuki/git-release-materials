@@ -2,8 +2,9 @@ package argument
 
 import (
 	"errors"
-	"github.com/jessevdk/go-flags"
 	"os"
+
+	"github.com/jessevdk/go-flags"
 )
 
 type Args struct {
@@ -22,13 +23,17 @@ func Parse() (Args, error) {
 		return args, err
 	}
 
-	if len(nonFlagArgs) != 3 {
-		return args, errors.New("at least three arguments are required, ex. git-release-materials sub-command commit1 commit2")
+	if len(nonFlagArgs) < 2 {
+		return args, errors.New("at least two arguments are required, ex. git-release-materials sub-command commit1")
 	}
 
 	args.Command = nonFlagArgs[0]
 	args.Commit1 = nonFlagArgs[1]
-	args.Commit2 = nonFlagArgs[2]
+	if len(nonFlagArgs) >= 3 {
+		args.Commit2 = nonFlagArgs[2]
+	} else {
+		args.Commit2 = "HEAD"
+	}
 
 	if args.GitDir == "" {
 		args.GitDir, _ = os.Getwd()
