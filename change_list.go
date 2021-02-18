@@ -1,11 +1,11 @@
-package command
+package main
 
 import (
-	"git-release-materials/argument"
-	"github.com/ryanuber/go-glob"
 	"log"
 	"os/exec"
 	"strings"
+
+	"github.com/ryanuber/go-glob"
 )
 
 type ChangeList struct {
@@ -16,7 +16,7 @@ type ChangeList struct {
 	Broken   []string
 }
 
-func NewChangeList(args argument.Args) ChangeList {
+func NewChangeList(args Args) ChangeList {
 	return ChangeList{
 		Added:    createList(args, "A"),
 		Modified: createList(args, "M"),
@@ -26,7 +26,7 @@ func NewChangeList(args argument.Args) ChangeList {
 	}
 }
 
-func createList(args argument.Args, diffFilter string) []string {
+func createList(args Args, diffFilter string) []string {
 	ret, err := exec.Command("git", "diff", "-z", "--name-only", "--diff-filter="+diffFilter, args.Commit1, args.Commit2).Output()
 	if err != nil {
 		log.Fatal(err)
@@ -35,7 +35,7 @@ func createList(args argument.Args, diffFilter string) []string {
 	return createTargetList(args, ret)
 }
 
-func createTargetList(args argument.Args, gitDiffResult []byte) []string {
+func createTargetList(args Args, gitDiffResult []byte) []string {
 	list := strings.FieldsFunc(string(gitDiffResult), func(c rune) bool {
 		return c == 0
 	})

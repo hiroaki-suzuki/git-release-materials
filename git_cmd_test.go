@@ -1,4 +1,4 @@
-package command
+package main
 
 import (
 	"os"
@@ -34,7 +34,6 @@ func TestExecGitArchive(t *testing.T) {
 	diffList := []string{".gitignore", "argument/args.go", "argument/args_test.go", "go.mod", "go.sum", "main.go"}
 	outputDirPath := "tmp"
 
-	_ = os.Chdir("../")
 	_ = os.MkdirAll(outputDirPath, 0744)
 
 	ret, err := execGitArchiveWithExtract(commit2, diffList, outputDirPath)
@@ -48,12 +47,15 @@ func TestExecGitArchive(t *testing.T) {
 
 func TestExecGitArchiveFail(t *testing.T) {
 	commit2 := "9718b8b"
-	diffList := []string{".gitignore", "argument/args.go", "argument/args_test.go", "go.mod", "go.sum", "main.go"}
+	diffList := []string{".gitignore", "argument/args.go", "argument/args_test.go", "go.mod", "go.sum", "go"}
 	outputDirPath := "tmp"
 
+	curDir, _ := os.Getwd()
 	_ = os.Chdir(os.TempDir())
 
 	_, err := execGitArchiveWithExtract(commit2, diffList, "./")
+
+	_ = os.Chdir(curDir)
 
 	if err == nil || err.Error() == "" {
 		t.Errorf("execGitArchive(%s, %v, %s): no error occurred.", commit2, diffList, outputDirPath)

@@ -1,15 +1,14 @@
-package command
+package main
 
 import (
 	"bufio"
 	"fmt"
-	"git-release-materials/argument"
 	"log"
 	"os"
 	"path/filepath"
 )
 
-func OutputList(changeList ChangeList, args argument.Args, outputDirPath string) {
+func OutputList(changeList ChangeList, args Args, outputDirPath string) {
 	filePath := filepath.Join(outputDirPath, "changelist.md")
 	file, err := os.Create(filePath)
 	if err != nil {

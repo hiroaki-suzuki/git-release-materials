@@ -1,13 +1,12 @@
-package command
+package main
 
 import (
-	"git-release-materials/argument"
 	"reflect"
 	"testing"
 )
 
 func TestCreateTargetList(t *testing.T) {
-	args := argument.Args{Exclude: ".gitignore,*.md"}
+	args := Args{Exclude: ".gitignore,*.md"}
 	gitDiffResult := []byte(".gitignore\x00functions.go\x00path/to/fileB\x00README.md")
 
 	expected := []string{"functions.go", "path/to/fileB"}

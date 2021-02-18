@@ -1,7 +1,6 @@
-package prepare
+package main
 
 import (
-	"git-release-materials/argument"
 	"os"
 	"path/filepath"
 	"testing"
@@ -9,7 +8,7 @@ import (
 )
 
 func TestPrepare(t *testing.T) {
-	args := argument.Args{GitDir: "../"}
+	args := Args{GitDir: "./"}
 
 	actual := Prepare(args)
 
@@ -19,7 +18,7 @@ func TestPrepare(t *testing.T) {
 }
 
 func TestPrepareNotGitDir(t *testing.T) {
-	args := argument.Args{GitDir: "../../"}
+	args := Args{GitDir: "../../"}
 
 	actual := Prepare(args)
 
@@ -39,7 +38,7 @@ func TestCreateOutputRootDir(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		args := argument.Args{OutputDir: testCase.outputDir}
+		args := Args{OutputDir: testCase.outputDir}
 		now := testCase.now
 
 		currentDir, _ := os.Getwd()

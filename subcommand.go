@@ -1,11 +1,10 @@
-package command
+package main
 
 import (
 	"errors"
-	"git-release-materials/argument"
 )
 
-func GetSubcommand(args argument.Args) (func(changeList ChangeList, outputDirPath string), error) {
+func GetSubcommand(args Args) (func(changeList ChangeList, outputDirPath string), error) {
 	switch args.Command {
 	case "list":
 		return func(changeList ChangeList, outputDirPath string) {

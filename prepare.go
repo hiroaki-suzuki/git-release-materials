@@ -1,13 +1,12 @@
-package prepare
+package main
 
 import (
-	"git-release-materials/argument"
 	"os"
 	"path/filepath"
 	"time"
 )
 
-func Prepare(args argument.Args) error {
+func Prepare(args Args) error {
 	if err := os.Chdir(args.GitDir); err != nil {
 		return err
 	}
@@ -19,7 +18,7 @@ func Prepare(args argument.Args) error {
 	return nil
 }
 
-func CreateOutputRootDir(args argument.Args, now time.Time) (string, error) {
+func CreateOutputRootDir(args Args, now time.Time) (string, error) {
 	outputDirName := "grm_" + now.Format("20060102_030405")
 	absOutputDirPath, err := filepath.Abs(args.OutputDir)
 	if err != nil {

@@ -1,14 +1,15 @@
-package command
+package main
 
 import (
 	"bytes"
 	"context"
-	"github.com/codeclysm/extract"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/codeclysm/extract"
 )
 
 func createGitDiffList(commit1 string, commit2 string) ([]string, error) {

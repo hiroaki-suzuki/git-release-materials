@@ -1,18 +1,16 @@
-package command
+package main
 
 import (
-	"git-release-materials/argument"
-	"git-release-materials/prepare"
 	"log"
 )
 
-func OutputMaterials(args argument.Args, outputDirPath string) {
+func OutputMaterials(args Args, outputDirPath string) {
 	diffList, err := createGitDiffList(args.Commit1, args.Commit2)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	releaseDirPath, err := prepare.CreateOutputDir(outputDirPath, "Release")
+	releaseDirPath, err := CreateOutputDir(outputDirPath, "Release")
 	if err != nil {
 		log.Fatal(err)
 	}
